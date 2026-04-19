@@ -161,29 +161,29 @@ export default function BamboosWebsite() {
       </section>
 
       <footer className="border-t border-white/10 px-6 py-10 text-white/50">
-  <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
-    
-    {/* Left side */}
-    <div className="text-center md:text-left">
-      <p className="text-white font-semibold tracking-wide">BAMBOOS</p>
-      <p className="mt-2 text-sm">info@bamboos.sk</p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div className="text-center md:text-left">
+            <p className="font-semibold tracking-wide text-white">BAMBOOS</p>
+            <p className="mt-2 text-sm">info@bamboos.sk</p>
 
-      {/* Legal links */}
-      <div className="mt-4 flex justify-center md:justify-start gap-4 text-xs text-white/40">
-        <a href="#" className="hover:text-white transition">Privacy Policy</a>
-        <a href="#" className="hover:text-white transition">Terms of Service</a>
-      </div>
+            <div className="mt-4 flex justify-center gap-4 text-xs text-white/40 md:justify-start">
+              <a href="/privacy" className="transition hover:text-white">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="transition hover:text-white">
+                Terms of Service
+              </a>
+            </div>
+          </div>
+
+          <div className="text-center text-sm leading-6 md:text-right">
+            <p className="text-white/70">Bamboos s.r.o.</p>
+            <p>Bajkalská 9/B, 831 04 Bratislava</p>
+            <p>IČO: 52340911</p>
+            <p>DIČ: 2121022783</p>
+          </div>
+        </div>
+      </footer>
     </div>
-
-    {/* Right side (company details) */}
-    <div className="text-center md:text-right text-sm leading-6">
-      <p className="text-white/70">Bamboos s.r.o.</p>
-      <p>Bajkalská 9/B, 831 04 Bratislava</p>
-      <p>IČO: 52340911</p>
-      <p>DIČ: 2121022783</p>
-    </div>
-
-  </div>
-</footer>
   );
 }
