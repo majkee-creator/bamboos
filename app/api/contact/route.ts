@@ -9,6 +9,15 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -16,7 +25,7 @@ export async function POST(req: Request) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const email = typeof body.email === "string" ? body.email.trim() : "";
     const message = typeof body.message === "string" ? body.message.trim() : "";
-    const company = typeof body.company === "string" ? body.company.trim() : ""; // honeypot
+    const company = typeof body.company === "string" ? body.company.trim() : "";
 
     if (company) {
       return NextResponse.json(
@@ -47,37 +56,27 @@ export async function POST(req: Request) {
     }
 
     if (!process.env.RESEND_API_KEY) {
-      console.error("Missing RESEND_API_KEY");
       return NextResponse.json(
-        { ok: false, error: "Server email is not configured." },
+        { ok: false, error: "Missing RESEND_API_KEY." },
         { status: 500 }
       );
     }
 
     if (!process.env.CONTACT_TO_EMAIL) {
-      console.error("Missing CONTACT_TO_EMAIL");
       return NextResponse.json(
-        { ok: false, error: "Recipient email is not configured." },
+        { ok: false, error: "Missing CONTACT_TO_EMAIL." },
         { status: 500 }
       );
     }
 
-    const subject = `New contact form message from ${name}`;
-
     const { error } = await resend.emails.send({
-      from: "Bamboos Wind Services <noreply@bamboos.sk>",
+      from: "info@bamboos.sk",
       to: [process.env.CONTACT_TO_EMAIL],
       replyTo: email,
-      subject,
-      text: [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        "",
-        "Message:",
-        message,
-      ].join("\n"),
+      subject: `New contact form message from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
           <h2>New contact form message</h2>
           <p><strong>Name:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
@@ -89,30 +88,35 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error("Resend error:", error);
+
       return NextResponse.json(
-        { ok: false, error: "Failed to send email." },
+        {
+          ok: false,
+          error:
+            typeof error.message === "string"
+              ? error.message
+              : "Failed to send email.",
+        },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { ok: true, message: "Your message has been sent successfully." },
+      {
+        ok: true,
+        message: "Email was sent. We will come back to you shortly.",
+      },
       { status: 200 }
     );
   } catch (error) {
     console.error("Contact API error:", error);
+
     return NextResponse.json(
-      { ok: false, error: "Something went wrong." },
+      {
+        ok: false,
+        error: error instanceof Error ? error.message : "Something went wrong.",
+      },
       { status: 500 }
     );
   }
-}
-
-function escapeHtml(str: string) {
-  return str
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }

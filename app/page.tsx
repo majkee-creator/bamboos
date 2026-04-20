@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ContactForm from "@/components/ui/contact-form";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#05070b] text-white overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden bg-[#05070b] text-white">
       {/* HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <Image
@@ -109,7 +110,10 @@ export default function HomePage() {
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="border-t border-white/10 bg-[#06090f] px-6 py-24">
+      <section
+        id="services"
+        className="border-t border-white/10 bg-[#06090f] px-6 py-24"
+      >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-center text-3xl font-semibold md:text-4xl">
             Our Services
@@ -145,33 +149,30 @@ export default function HomePage() {
 
       {/* CONTACT */}
       <section id="contact" className="border-t border-white/10 px-6 py-24">
-        <div className="mx-auto max-w-xl text-center">
-          <h2 className="text-4xl font-bold">Contact</h2>
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center text-4xl font-bold">Contact</h2>
 
-          <form className="mt-8 flex flex-col gap-4">
-            <input
-              type="email"
-              placeholder="Email"
-              className="rounded-md border border-white/10 bg-black/60 p-3.5 text-white outline-none placeholder:text-white/40 focus:border-white/25"
-            />
+          <div className="mt-10 grid gap-8 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+              <ContactForm />
+            </div>
 
-            <textarea
-              placeholder="Message"
-              rows={6}
-              className="rounded-md border border-white/10 bg-black/60 p-3.5 text-white outline-none placeholder:text-white/40 focus:border-white/25"
-            />
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+              <h3 className="text-xl font-semibold text-white">
+                Bamboos Wind Services
+              </h3>
 
-            <button
-              type="submit"
-              className="mt-1 rounded-md bg-blue-600 py-3.5 text-sm font-medium uppercase tracking-[0.14em] transition hover:bg-blue-500"
-            >
-              Send
-            </button>
-          </form>
+              <p className="mt-4 text-sm leading-7 text-white/68">
+                Offshore wind drone inspections, monitoring and visual data
+                support for safer and more efficient operations.
+              </p>
 
-          <div className="mt-10 space-y-2 text-sm text-white/62">
-            <p>info@bamboos.sk</p>
-            <p>+421 949 566 174</p>
+              <div className="mt-8 space-y-2 text-sm text-white/68">
+                <p>info@bamboos.sk</p>
+                <p>+421 949 566 174</p>
+                <p>Bratislava, Slovakia</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
