@@ -7,11 +7,21 @@ import ContactForm from "@/components/ui/contact-form";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#05070b] text-white">
+    <main
+      id="top"
+      className="min-h-screen overflow-x-hidden bg-[#05070b] text-white"
+    >
       {/* HEADER */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
+          
+          {/* ✅ FIXED: CLICKABLE LOGO */}
+          <Link
+            href="/"
+            scroll
+            className="flex items-center gap-3 transition-opacity hover:opacity-90"
+            aria-label="Go to homepage"
+          >
             <Image
               src="/drone-logo.svg"
               alt="Bamboos Wind Services"
@@ -27,7 +37,7 @@ export default function HomePage() {
                 WIND SERVICES
               </p>
             </div>
-          </div>
+          </Link>
 
           <nav className="hidden items-center gap-8 text-sm text-white/75 md:flex">
             <a href="#services" className="transition hover:text-white">
