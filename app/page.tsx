@@ -6,6 +6,16 @@ import { motion } from "framer-motion";
 import ContactForm from "@/components/ui/contact-form";
 
 export default function HomePage() {
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <main
       id="top"
@@ -14,11 +24,9 @@ export default function HomePage() {
       {/* HEADER */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          
-          {/* ✅ FIXED: CLICKABLE LOGO */}
           <Link
             href="/"
-            scroll
+            onClick={handleLogoClick}
             className="flex items-center gap-3 transition-opacity hover:opacity-90"
             aria-label="Go to homepage"
           >
