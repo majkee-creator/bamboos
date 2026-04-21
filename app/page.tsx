@@ -5,6 +5,28 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ContactForm from "@/components/ui/contact-form";
 
+const Rotor = ({
+  className,
+  size = 92,
+}: {
+  className: string;
+  size?: number;
+}) => {
+  return (
+    <div
+      className={`pointer-events-none absolute ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <div className="absolute inset-0 rounded-full border border-white/10 bg-white/5 blur-[2px]" />
+      <div className="rotor-spin absolute inset-0">
+        <div className="absolute left-1/2 top-1/2 h-[10%] w-[92%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-[1px]" />
+        <div className="absolute left-1/2 top-1/2 h-[92%] w-[10%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-[1px]" />
+      </div>
+      <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/35 shadow-[0_0_10px_rgba(255,255,255,0.18)]" />
+    </div>
+  );
+};
+
 export default function HomePage() {
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname === "/") {
@@ -21,7 +43,6 @@ export default function HomePage() {
       id="top"
       className="min-h-screen overflow-x-hidden bg-[#05070b] text-white"
     >
-      {/* HEADER */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link
@@ -58,7 +79,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* HERO */}
       <section className="relative flex min-h-screen items-center pt-24">
         <div className="absolute inset-0">
           <Image
@@ -111,23 +131,41 @@ export default function HomePage() {
 
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: [0, -8, 0],
+            }}
+            transition={{
+              opacity: { duration: 0.8, delay: 0.15 },
+              scale: { duration: 0.8, delay: 0.15 },
+              y: {
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
             className="relative hidden min-h-[440px] lg:block"
           >
-            <Image
-              src="/drone-hero.png"
-              alt="Drone"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-contain drop-shadow-[0_18px_48px_rgba(0,0,0,0.45)]"
-            />
+            <div className="relative h-full w-full">
+              <Image
+                src="/drone-hero.png"
+                alt="Drone"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-contain drop-shadow-[0_18px_48px_rgba(0,0,0,0.45)]"
+              />
+
+              <Rotor className="left-[26%] top-[18%]" size={84} />
+              <Rotor className="right-[11%] top-[30%]" size={84} />
+              <Rotor className="left-[0%] top-[58%]" size={84} />
+              <Rotor className="right-[19%] bottom-[6%]" size={84} />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* SERVICES */}
       <section
         id="services"
         className="border-t border-white/10 bg-[#06090f] px-6 py-24"
@@ -165,7 +203,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CONTACT */}
       <section id="contact" className="border-t border-white/10 px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-4xl font-bold">Contact</h2>
@@ -195,7 +232,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="border-t border-white/10 px-6 py-10 text-sm text-white/58">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row">
           <div>

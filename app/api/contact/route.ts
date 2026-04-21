@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const message = typeof body.message === "string" ? body.message.trim() : "";
     const company = typeof body.company === "string" ? body.company.trim() : "";
 
-    // Honeypot field for bots
+    // Honeypot (anti-bot)
     if (company) {
       return NextResponse.json(
         { ok: true, message: "Message received." },
@@ -82,10 +82,10 @@ export async function POST(req: Request) {
       );
     }
 
+    // ENV VARIABLES
     const resendApiKey = process.env.RESEND_API_KEY;
     const contactToEmail = process.env.CONTACT_TO_EMAIL;
-    const contactFromEmail =
-      process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
+    const contactFromEmail = process.env.CONTACT_FROM_EMAIL;
 
     if (!resendApiKey) {
       console.error("Missing RESEND_API_KEY");
@@ -99,6 +99,14 @@ export async function POST(req: Request) {
       console.error("Missing CONTACT_TO_EMAIL");
       return NextResponse.json(
         { ok: false, error: "Server email recipient is not configured." },
+        { status: 500 }
+      );
+    }
+
+    if (!contactFromEmail) {
+      console.error("Missing CONTACT_FROM_EMAIL");
+      return NextResponse.json(
+        { ok: false, error: "Server sender email is not configured." },
         { status: 500 }
       );
     }
@@ -145,7 +153,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         ok: true,
-        message: "Email was sent. We will come back to you shortly.",
+        message: "Email was sent. We will get back to you shortly.",
       },
       { status: 200 }
     );
