@@ -21,7 +21,6 @@ export default function HomePage() {
       id="top"
       className="min-h-screen overflow-x-hidden bg-[#05070b] text-white"
     >
-      {/* HEADER */}
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black/45 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link
@@ -58,7 +57,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* HERO */}
       <section className="relative flex min-h-screen items-center pt-24">
         <div className="absolute inset-0">
           <Image
@@ -127,7 +125,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SERVICES */}
       <section
         id="services"
         className="border-t border-white/10 bg-[#06090f] px-6 py-24"
@@ -165,7 +162,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CONTACT */}
       <section id="contact" className="border-t border-white/10 px-6 py-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-4xl font-bold">Contact</h2>
@@ -195,7 +191,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="border-t border-white/10 px-6 py-10 text-sm text-white/58">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row">
           <div>

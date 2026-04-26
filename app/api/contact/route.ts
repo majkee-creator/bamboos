@@ -3,11 +3,7 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const MIN_NAME_LENGTH = 2;
-const MAX_NAME_LENGTH = 100;
-const MAX_EMAIL_LENGTH = 320;
-const MIN_MESSAGE_LENGTH = 10;
-const MAX_MESSAGE_LENGTH = 5000;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -27,144 +23,68 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const name = typeof body.name === "string" ? body.name.trim() : "";
-    const email =
-      typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const email = typeof body.email === "string" ? body.email.trim() : "";
     const message = typeof body.message === "string" ? body.message.trim() : "";
     const company = typeof body.company === "string" ? body.company.trim() : "";
 
-    // Honeypot (anti-bot)
+    // honeypot
     if (company) {
-      return NextResponse.json(
-        { ok: true, message: "Message received." },
-        { status: 200 }
-      );
+      return NextResponse.json({ ok: true }, { status: 200 });
     }
 
-    if (!name || name.length < MIN_NAME_LENGTH) {
+    if (!name || name.length < 2) {
       return NextResponse.json(
         { ok: false, error: "Please enter your name." },
         { status: 400 }
       );
     }
 
-    if (name.length > MAX_NAME_LENGTH) {
-      return NextResponse.json(
-        { ok: false, error: "Name is too long." },
-        { status: 400 }
-      );
-    }
-
     if (!email || !isValidEmail(email)) {
       return NextResponse.json(
-        { ok: false, error: "Please enter a valid email address." },
+        { ok: false, error: "Please enter a valid email." },
         { status: 400 }
       );
     }
 
-    if (email.length > MAX_EMAIL_LENGTH) {
+    if (!message || message.length < 10) {
       return NextResponse.json(
-        { ok: false, error: "Email address is too long." },
+        { ok: false, error: "Message too short." },
         { status: 400 }
       );
     }
-
-    if (!message || message.length < MIN_MESSAGE_LENGTH) {
-      return NextResponse.json(
-        { ok: false, error: "Message must be at least 10 characters long." },
-        { status: 400 }
-      );
-    }
-
-    if (message.length > MAX_MESSAGE_LENGTH) {
-      return NextResponse.json(
-        { ok: false, error: "Message is too long." },
-        { status: 400 }
-      );
-    }
-
-    // ENV VARIABLES
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const contactToEmail = process.env.CONTACT_TO_EMAIL;
-    const contactFromEmail = process.env.CONTACT_FROM_EMAIL;
-
-    if (!resendApiKey) {
-      console.error("Missing RESEND_API_KEY");
-      return NextResponse.json(
-        { ok: false, error: "Server email is not configured." },
-        { status: 500 }
-      );
-    }
-
-    if (!contactToEmail) {
-      console.error("Missing CONTACT_TO_EMAIL");
-      return NextResponse.json(
-        { ok: false, error: "Server email recipient is not configured." },
-        { status: 500 }
-      );
-    }
-
-    if (!contactFromEmail) {
-      console.error("Missing CONTACT_FROM_EMAIL");
-      return NextResponse.json(
-        { ok: false, error: "Server sender email is not configured." },
-        { status: 500 }
-      );
-    }
-
-    const resend = new Resend(resendApiKey);
 
     const { error } = await resend.emails.send({
-      from: `Bamboos Wind Services <${contactFromEmail}>`,
-      to: [contactToEmail],
-      replyTo: [email],
-      subject: `New contact form message from ${name}`,
-      text: [
-        "New contact form message",
-        "",
-        `Name: ${name}`,
-        `Email: ${email}`,
-        "",
-        "Message:",
-        message,
-      ].join("\n"),
+      from: "Bamboos Wind Services <info@bamboos.sk>", // ✅ FIXED
+      to: [process.env.CONTACT_TO_EMAIL!],
+      replyTo: email,
+      subject: `New message from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
       html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-          <h2>New contact form message</h2>
+        <div style="font-family: Arial;">
+          <h2>New contact message</h2>
           <p><strong>Name:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Message:</strong></p>
-          <div style="white-space: pre-wrap;">${escapeHtml(message)}</div>
+          <p>${escapeHtml(message)}</p>
         </div>
       `,
     });
 
     if (error) {
-      console.error("Resend error:", error);
-
+      console.error(error);
       return NextResponse.json(
-        {
-          ok: false,
-          error: "Failed to send email. Please try again later.",
-        },
+        { ok: false, error: "Failed to send email." },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      {
-        ok: true,
-        message: "Email was sent. We will get back to you shortly.",
-      },
+      { ok: true, message: "Message sent successfully." },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Contact API error:", error);
-
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
-      {
-        ok: false,
-        error: "Something went wrong. Please try again later.",
-      },
+      { ok: false, error: "Server error." },
       { status: 500 }
     );
   }
