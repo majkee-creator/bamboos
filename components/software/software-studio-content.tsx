@@ -6,8 +6,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Globe, Smartphone, X } from "lucide-react";
 import {
+  COMING_SOON_APPS,
   IN_DEVELOPMENT_PROJECTS,
   PUBLISHED_APPS,
+  type ComingSoonApp,
   type PublishedApp,
 } from "@/lib/software-catalog";
 
@@ -27,6 +29,143 @@ function AppleGlyph() {
     >
       <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.33c.64-.78 1.08-1.86.96-2.94-.93.04-2.06.62-2.72 1.4-.58.68-1.1 1.78-.96 2.84 1.04.08 2.09-.52 2.72-1.3z" />
     </svg>
+  );
+}
+
+function GooglePlayGlyph() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-4 w-4 shrink-0"
+    >
+      <path d="M3.61 1.814L13.793 12 3.61 22.186a1.75 1.75 0 0 1-.61-1.33V3.144c0-.517.224-.995.61-1.33zm1.42-.916l11.27 6.49-2.81 2.81-8.46-9.3zm12.48 7.187l2.97 1.71c.97.56.97 1.96 0 2.52l-2.97 1.71-3.1-3.1 3.1-2.84zM5.03 23.102l8.46-9.3 2.81 2.81-11.27 6.49z" />
+    </svg>
+  );
+}
+
+function ComingSoonShowcaseCard({
+  app,
+  index,
+}: {
+  app: ComingSoonApp;
+  index: number;
+}) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.08, 0.16) }}
+      className="flex flex-col justify-between rounded-3xl border border-white/10 bg-white/[0.025] p-6 transition-colors hover:border-white/20 sm:p-8"
+    >
+      <div>
+        <div className="flex items-start gap-4">
+          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-[18px] border border-white/15 bg-black shadow-[0_12px_32px_rgba(0,0,0,0.45)] sm:h-20 sm:w-20 sm:rounded-[22px]">
+            <Image
+              src={app.icon}
+              alt={`${app.name} app icon`}
+              fill
+              sizes="80px"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-white/12 bg-white/[0.05] px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70">
+                {app.category}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/25 bg-amber-400/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-200">
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 rounded-full bg-amber-400"
+                />
+                Coming Soon
+              </span>
+            </div>
+
+            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+              {app.name}
+            </h3>
+            <p className="mt-1 text-xs font-medium text-amber-200/80">
+              {app.statusLabel}
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-5 text-sm leading-7 text-white/72 sm:text-[0.95rem]">
+          {app.description}
+        </p>
+
+        <ul className="mt-5 space-y-2 text-sm text-white/68">
+          {app.highlights.map((item) => (
+            <li key={item} className="flex items-start gap-2.5">
+              <span
+                aria-hidden="true"
+                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500/80"
+              />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-7">
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href={app.appStoreUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition hover:border-white/35 hover:bg-white/15"
+          >
+            <AppleGlyph />
+            <span>App Store</span>
+            <span className="rounded bg-white/15 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-white/85">
+              Pending Review
+            </span>
+          </a>
+
+          {app.googlePlayUrl && (
+            <a
+              href={app.googlePlayUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition hover:border-white/35 hover:bg-white/15"
+            >
+              <GooglePlayGlyph />
+              <span>Google Play</span>
+              <span className="rounded bg-white/15 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-white/85">
+                Pending Review
+              </span>
+            </a>
+          )}
+
+          {app.websiteUrl && (
+            <a
+              href={app.websiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-white/85 transition hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
+            >
+              <Globe className="h-4 w-4 text-white/65" />
+              <span>{app.websiteLabel ?? "Website"}</span>
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-70" />
+            </a>
+          )}
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/45">
+          <span className="inline-flex items-center gap-1.5">
+            <Smartphone className="h-3.5 w-3.5" />
+            {app.platforms.join(" · ")}
+          </span>
+          <span>App Store ID: {app.appStoreId}</span>
+          {app.googlePlayId && <span>Google Play ID: {app.googlePlayId}</span>}
+        </div>
+      </div>
+    </motion.article>
   );
 }
 
@@ -263,6 +402,12 @@ export default function SoftwareStudioContent() {
                 Published Apps
               </a>
               <a
+                href="#coming-soon"
+                className="inline-flex items-center justify-center rounded-md border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium uppercase tracking-[0.14em] transition hover:bg-white/10"
+              >
+                Coming Soon
+              </a>
+              <a
                 href="#in-development"
                 className="inline-flex items-center justify-center rounded-md border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium uppercase tracking-[0.14em] transition hover:bg-white/10"
               >
@@ -307,6 +452,35 @@ export default function SoftwareStudioContent() {
         </div>
       </section>
 
+      {/* Coming Soon — Submitted for Store Review */}
+      <section
+        id="coming-soon"
+        className="border-t border-white/10 bg-[#05070b] px-6 py-20 sm:py-24"
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs uppercase tracking-[0.32em] text-white/50">
+                Submitted for Store Review
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Coming Soon
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-6 text-white/60">
+              Completed releases currently awaiting App Store and Google Play
+              review approval.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            {COMING_SOON_APPS.map((app, index) => (
+              <ComingSoonShowcaseCard key={app.slug} app={app} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* In Development */}
       <section
         id="in-development"
@@ -326,7 +500,7 @@ export default function SoftwareStudioContent() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
             {IN_DEVELOPMENT_PROJECTS.map((project, index) => (
               <motion.div
                 key={project.name}

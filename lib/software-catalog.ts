@@ -19,11 +19,69 @@ export type PublishedApp = {
   websiteLabel?: string;
 };
 
+export type ComingSoonApp = {
+  slug: string;
+  name: string;
+  category: string;
+  statusLabel: string;
+  description: string;
+  highlights: string[];
+  platforms: string[];
+  icon: string;
+  appStoreUrl: string;
+  appStoreId: string;
+  googlePlayUrl?: string;
+  googlePlayId?: string;
+  websiteUrl?: string;
+  websiteLabel?: string;
+};
+
 export type InDevelopmentProject = {
   name: string;
   category: string;
   description: string;
 };
+
+export const COMING_SOON_APPS: ComingSoonApp[] = [
+  {
+    slug: "now",
+    name: "NOW – Meet Your Friends",
+    category: "Social Networking",
+    statusLabel: "Coming Soon — submitted to Apple and Google for review",
+    description:
+      "A social networking app designed to bring friends together through live location sharing, spontaneous meetups, messaging, voice and video calls.",
+    highlights: [
+      "Live friend map with Ghost Mode ON by default",
+      "Spontaneous meetups, Moments, and Private Circles",
+      "End-to-end encrypted messaging, voice, and video calls",
+    ],
+    platforms: ["iOS", "iPadOS", "Android"],
+    icon: "/software/now/icon.png",
+    appStoreUrl: "https://apps.apple.com/app/id6839253524",
+    appStoreId: "6839253524",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=now.nowapp.app",
+    googlePlayId: "now.nowapp.app",
+    websiteUrl: "https://nowapp.now",
+    websiteLabel: "nowapp.now",
+  },
+  {
+    slug: "wildswitch",
+    name: "WildSwitch",
+    category: "Multiplayer Game",
+    statusLabel: "Coming Soon — submitted for Apple review",
+    description:
+      "A multiplayer animal adventure game featuring exciting chases, teamwork, rescues and immersive wildlife arenas.",
+    highlights: [
+      "Fast-paced multiplayer animal chases and rescues",
+      "Teamwork-driven abilities across immersive wildlife arenas",
+      "Built for iPhone and iPad",
+    ],
+    platforms: ["iOS", "iPadOS"],
+    icon: "/software/wildswitch/icon.png",
+    appStoreUrl: "https://apps.apple.com/app/id6832195230",
+    appStoreId: "6832195230",
+  },
+];
 
 export const PUBLISHED_APPS: PublishedApp[] = [
   {
@@ -163,11 +221,6 @@ export const PUBLISHED_APPS: PublishedApp[] = [
 ];
 
 export const IN_DEVELOPMENT_PROJECTS: InDevelopmentProject[] = [
-  {
-    name: "WildSwitch",
-    category: "Multiplayer Game",
-    description: "Multiplayer animal chasing game.",
-  },
   {
     name: "ABYSS",
     category: "Exploration Game",

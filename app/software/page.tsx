@@ -5,7 +5,7 @@ import SoftwareStudioContent from "@/components/software/software-studio-content
 export const metadata: Metadata = {
   title: "Bamboos Software Studio — Mobile Apps, Creative Software & Games",
   description:
-    "Independent mobile applications, creative software and interactive entertainment developed and published by Bamboos, including EMPIRES: Dawn of Civilization, B&W Camera, MeetBrief, and Offshore Fly.",
+    "Independent mobile applications, creative software and interactive entertainment developed and published by Bamboos, including EMPIRES: Dawn of Civilization, B&W Camera, MeetBrief, Offshore Fly, NOW – Meet Your Friends, and WildSwitch.",
   alternates: {
     canonical: "https://www.bamboos.sk/software",
   },
